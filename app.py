@@ -1636,7 +1636,7 @@ def create_trend_chart(trends: Dict) -> go.Figure:
 @st.cache_resource
 def load_engine():
     """Load clinical engine (cached)"""
-    model_path = r"C:\Users\VICTUS\Desktop\dd\diabetes_clinical_model_calibrated.pkl"
+    model_path = "diabetes_clinical_model_calibrated.pkl"
     return AdvancedClinicalEngine(model_path)
 
 # Initialize engines
