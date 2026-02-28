@@ -29,6 +29,13 @@ from pathlib import Path
 import hashlib
 import uuid
 
+# Sklearn compatibility for model loading
+try:
+    import sklearn_compat
+    SKLEARN_COMPAT_AVAILABLE = True
+except ImportError:
+    SKLEARN_COMPAT_AVAILABLE = False
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -247,7 +254,11 @@ class ClinicalDecisionSupportEngine:
     def __init__(self, model_path: str):
         """Initialize the engine"""
         try:
-            self.model = joblib.load(model_path)
+            if SKLEARN_COMPAT_AVAILABLE:
+                # Use sklearn_compat for loading models from older sklearn versions
+                self.model = sklearn_compat.load(model_path)
+            else:
+                self.model = joblib.load(model_path)
             logger.info(f"✅ Model loaded from {model_path}")
         except Exception as e:
             logger.error(f"❌ Error loading model: {e}")
